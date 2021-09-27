@@ -1,0 +1,29 @@
+version: "3.7"
+
+services:
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: books
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+
+  web:
+    build: 
+      context: ./../../
+      dockerfile: build/package/Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+          - DATABASE_HOST=db
+    depends_on:
+      - db
